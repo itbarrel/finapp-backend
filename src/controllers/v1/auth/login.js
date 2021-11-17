@@ -26,13 +26,13 @@ const login = async (req, res, next) => {
                     }
 
                     const jwtToken = jwt.sign(decodeObj, config.jwt.secret, { expiresIn: '2h' })
-                    const accountType = await account.getAccountType()
+                    const accountType = (domain == 'public') ? { name: null } : await account.getAccountType()
 
                     const domainToSend = {
                         name: domain,
                         dynamicFormToken: account.dynamicFormAccountApikey,
                         type: accountType.name,
-                        isDynamicFormsPublic: (accountType.name == 'Bank') ? false : true
+                        isDynamicFormsPublic: (accountType.name == 'EMS') ? true : false
                     }
 
                     const userToSend = {
