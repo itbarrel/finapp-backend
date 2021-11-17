@@ -117,12 +117,12 @@ module.exports = (sequelize, DataTypes) => {
                 if (user.password) {
                     const salt = bcrypt.genSaltSync(10)
                     user.password = bcrypt.hashSync(user.password, salt)
+                    await EmailService.signUpEmail(user.email, user.userName, decryptedPassword)
                 }
             },
-            afterCreate: async (user) => {
-                await EmailService.signUpEmail(user.email, user.userName, user.password)
-                return user
-            },
+            // afterCreate: async (user) => {
+            //     return user
+            // },
             beforeUpdate: async (user) => {
                 if (user.password) {
                     const salt = bcrypt.genSaltSync(10)

@@ -7,6 +7,7 @@ const useroObj = {
         firstName: Joi.string(),
         middleName: Joi.string(),
         lastName: Joi.string(),
+        RoleId: Joi.string(),
         email: Joi.string(),
         avatar: Joi.string(),
         password: Joi.string(),
