@@ -1,0 +1,50 @@
+{
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:jest/recommended",
+    "plugin:security/recommended"
+  ],
+  "plugins": [
+    "jest",
+    "security"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "no-console": "warn",
+    "func-names": "off",
+    "no-underscore-dangle": "off",
+    "consistent-return": "off",
+    "jest/expect-expect": "off",
+    "security/detect-object-injection": "off",
+    "indent": [
+      "error",
+      4
+    ],
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true
+      }
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "max-len": [
+      "error",
+      125
+    ],
+    "semi-style": [
+      "error",
+      "last"
+    ],
+    "no-param-reassign": "off"
+  }
+}

@@ -1,0 +1,5 @@
+module.exports.accountPermissions = require('./accounts')
+module.exports.userPermissions = require('./users')
+module.exports.rolePermissions = require('./roles')
+module.exports.accountTypePermissions = require('./accountType')
+module.exports.formSubmissionPermissions = require('./formSubmission')
