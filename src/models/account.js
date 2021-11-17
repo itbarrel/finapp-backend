@@ -7,7 +7,7 @@ const DynamicFormProxy = require('../proxies/dynamicFormProxy')
 
 // const nonCopyTables = ['Account']
 
-const modelOrder = ['Role', 'User', 'AccountType', 'FormSubmission']
+const modelOrder = ['Role', 'User', 'FormSubmission']
 
 module.exports = (sequelize, DataTypes) => {
     class Account extends Model {
@@ -92,6 +92,9 @@ module.exports = (sequelize, DataTypes) => {
                     })
                 }
 
+                return account
+            },
+            afterCreate: async (account) => {
                 const dynamicForm = await DynamicFormProxy.createAccount({ name: account.tenant_name })
                 account.dynamicFormAccountId = dynamicForm.data.id
                 account.dynamicFormAccountApikey = dynamicForm.data.apikey
