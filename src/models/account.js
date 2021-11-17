@@ -7,7 +7,7 @@ const DynamicFormProxy = require('../proxies/dynamicFormProxy')
 
 // const nonCopyTables = ['Account']
 
-const modelOrder = ['Role', 'User', 'FormSubmission']
+const modelOrder = ['Role', 'User', 'AccountType', 'FormSubmission']
 
 module.exports = (sequelize, DataTypes) => {
     class Account extends Model {

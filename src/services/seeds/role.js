@@ -7,13 +7,6 @@ const superAdminRole = {
         Accounts: ['*'],
         Roles: ['*'],
         Users: ['*'],
-        Departments: ['*'],
-        Incidents: ['*'],
-        Tasks: ['*'],
-        ColorPalettes: ['*'],
-        CustomMessages: ['*'],
-        Scenarios: ['*'],
-        TaskLists: ['*'],
         AccountTypes: ['*'],
         FormSubmissions: ['*'],
 

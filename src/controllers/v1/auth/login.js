@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const { UserService } = require('../../../services/resources')
+const { UserService, AccountTypeService } = require('../../../services/resources')
 
 const config = require('../../../../config')
 const storage = require('../../../utils/cl-storage')
@@ -26,12 +26,30 @@ const login = async (req, res, next) => {
                     }
 
                     const jwtToken = jwt.sign(decodeObj, config.jwt.secret, { expiresIn: '2h' })
+                    const accountType = await account.getAccountType()
+
+                    const domainToSend = {
+                        name: domain,
+                        dynamicFormToken: account.dynamicFormAccountApikey,
+                        type: accountType.name,
+                        isDynamicFormsPublic: (accountType.name == 'Bank') ? false : true
+                    }
+
+                    const userToSend = {
+                        id: user.id,
+                        userName: user.userName,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        createdAt: user.createdAt
+                    }
+
                     res.send({
                         message: 'Welcome',
                         token: jwtToken,
                         permissions: role.permissions,
-                        user,
-                        dynamicFormToken: account.dynamicFormAccountApikey,
+                        user: userToSend,
+                        domain: domainToSend
                     })
                 } else {
                     next(new Error('Role not attached'))

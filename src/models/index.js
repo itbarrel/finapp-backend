@@ -16,7 +16,7 @@ const basename = path.basename(__filename)
 // } else {
 //   sequelize = new Sequelize(config.database, config.username, config.password, config);
 // }
-const nonTenantModels = ['Account']
+const nonTenantModels = ['Account', 'AccountType']
 
 module.exports = (tenant = 'public') => {
     const db = {}

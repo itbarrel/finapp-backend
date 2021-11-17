@@ -17,13 +17,6 @@ class RoleService extends ResourceService {
                 permissions: {
                     Roles: ['*'],
                     Users: ['*'],
-                    Departments: ['*'],
-                    Incidents: ['*'],
-                    Tasks: ['*'],
-                    ColorPalettes: ['*'],
-                    CustomMessages: ['*'],
-                    Scenarios: ['*'],
-                    TaskLists: ['*'],
                     AccountTypes: ['*'],
                     FormSubmissions: ['*'],
 
