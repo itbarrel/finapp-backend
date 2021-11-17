@@ -114,6 +114,7 @@ module.exports = (sequelize, DataTypes) => {
         ],
         hooks: {
             beforeCreate: async (user) => {
+                const decryptedPassword = user.password
                 if (user.password) {
                     const salt = bcrypt.genSaltSync(10)
                     user.password = bcrypt.hashSync(user.password, salt)

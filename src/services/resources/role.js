@@ -40,9 +40,7 @@ class RoleService extends ResourceService {
     }
 
     async createDefaultRolesFor() {
-        return Promise.all(this.mainRoles.map(async (role) => {
-            await this.model.create(role)
-        }))
+        return Promise.all(this.mainRoles.map(async (role) => this.model.create(role)))
     }
 
     async getPermissionEntities() {

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const { UserService, AccountTypeService } = require('../../../services/resources')
+const { UserService } = require('../../../services/resources')
 
 const config = require('../../../../config')
 const storage = require('../../../utils/cl-storage')
@@ -26,13 +26,13 @@ const login = async (req, res, next) => {
                     }
 
                     const jwtToken = jwt.sign(decodeObj, config.jwt.secret, { expiresIn: '2h' })
-                    const accountType = (domain == 'public') ? { name: null } : await account.getAccountType()
+                    const accountType = (domain === 'public') ? { name: null } : await account.getAccountType()
 
                     const domainToSend = {
                         name: domain,
                         dynamicFormToken: account.dynamicFormAccountApikey,
                         type: accountType.name,
-                        isDynamicFormsPublic: (accountType.name == 'EMS') ? true : false
+                        isDynamicFormsPublic: (accountType.name === 'EMS'),
                     }
 
                     const userToSend = {
@@ -41,7 +41,7 @@ const login = async (req, res, next) => {
                         firstName: user.firstName,
                         lastName: user.lastName,
                         email: user.email,
-                        createdAt: user.createdAt
+                        createdAt: user.createdAt,
                     }
 
                     res.send({
@@ -49,7 +49,7 @@ const login = async (req, res, next) => {
                         token: jwtToken,
                         permissions: role.permissions,
                         user: userToSend,
-                        domain: domainToSend
+                        domain: domainToSend,
                     })
                 } else {
                     next(new Error('Role not attached'))
