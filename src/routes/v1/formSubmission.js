@@ -24,4 +24,7 @@ router.put('/:id',
 router.delete('/:id', validate(generalValidations.getResource),
     chkPermissions(formSubmissionPermissions.delete), formSubmissionController.destroy)
 
+router.post('/complete',
+    chkPermissions(formSubmissionPermissions.create), formSubmissionController.complete)
+
 module.exports = router

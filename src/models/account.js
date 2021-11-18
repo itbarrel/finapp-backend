@@ -98,6 +98,7 @@ module.exports = (sequelize, DataTypes) => {
                 const dynamicForm = await DynamicFormProxy.createAccount({ name: account.tenant_name })
                 account.dynamicFormAccountId = dynamicForm.data.id
                 account.dynamicFormAccountApikey = dynamicForm.data.apikey
+                await account.save()
 
                 return account
             },
