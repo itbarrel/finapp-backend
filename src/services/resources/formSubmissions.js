@@ -1,6 +1,6 @@
+const { Op } = require('sequelize')
 const models = require('../../models')
 const storage = require('../../utils/cl-storage')
-
 const ResourceService = require('./resource')
 const AccountService = require('./account')
 
@@ -11,6 +11,27 @@ class FormSubmissionsService extends ResourceService {
         const schemaModels = models(domain)
         super(schemaModels.FormSubmission)
         this.domain = domain
+    }
+
+    async all(query = {}, offset = 1, limit = 20) {
+        const { status } = query
+        if (status === 'completed') {
+            delete query.status
+            query.deletedAt = { [Op.ne]: null }
+        }
+
+        const options = {
+            // offset: offset * (limit + 1),
+            where: query,
+            page: offset,
+            paginate: limit,
+        }
+
+        if (status === 'completed') {
+            options.paranoid = false
+        }
+
+        return this.model.paginate(options)
     }
 
     async create(obj = {}) {
