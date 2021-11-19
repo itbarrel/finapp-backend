@@ -26,17 +26,22 @@ class FormSubmissionsService extends ResourceService {
 
     async complete(obj = {}) {
         const {
-            userId, formId, dynamicFormAccountId, data,
+            userId, formId, dynamicFormAccountId,
         } = obj
         if (!dynamicFormAccountId) throw new Error('No Account Found to send Details')
 
         const Account = new AccountService()
         const recieverAccount = await Account.findByQuery({ dynamicFormAccountId })
         if (!recieverAccount) throw new Error('No Account Found to send Details')
+        // Find the data
+
+        const formData = await this.model.findOne({ where: { userId, formId } })
+        if (!formData) throw new Error('No Submitted data Found')
 
         // Deletes from previous Account
-        this.model.destroy({ where: { userId, formId } })
+        await this.model.destroy({ where: { userId, formId } })
 
+        const { data } = formData
         // Deletes from previous Account
         const { tenant_name: tenantName } = recieverAccount
         const recieverAccountService = new FormSubmissionsService(tenantName)
