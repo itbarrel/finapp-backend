@@ -23,12 +23,16 @@ class EmailService {
         })
     }
 
-    async signUpEmail(email, name, password) {
+    async signUpEmail(email, name, password, domain) {
         const mailOptions = {
             from: config.email.from,
             to: email,
-            subject: 'Welcome to the Project',
-            text: `Hello ${name}, hope you are fine . Welcome onboard.your Email is ${email} and Password is ${password}`,
+            subject: 'Welcome to the FinApp',
+            text: `Hello ${name}, Welcome Onboard.
+            Hope you are fine. Here are your credaitials
+            Domain: ${domain}.
+            Email: ${email}.
+            Password: ${password}`,
         }
 
         await this.sendEmail(mailOptions)
@@ -41,7 +45,9 @@ class EmailService {
             from: config.email.from,
             to: email,
             subject: 'Forget Password Email',
-            text: `Hello ${name}, hope you are fine . Welcome onboard. Your Reset Password Link is ${link}`,
+            text: `Hello ${name}, hope you are fine 
+            Here is your Reset Password Link 
+            Link: ${link}`,
         }
 
         await this.sendEmail(mailOptions)

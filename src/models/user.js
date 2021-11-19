@@ -114,11 +114,9 @@ module.exports = (sequelize, DataTypes) => {
         ],
         hooks: {
             beforeCreate: async (user) => {
-                const decryptedPassword = user.password
                 if (user.password) {
                     const salt = bcrypt.genSaltSync(10)
                     user.password = bcrypt.hashSync(user.password, salt)
-                    await EmailService.signUpEmail(user.email, user.userName, decryptedPassword)
                 }
             },
             // afterCreate: async (user) => {
@@ -146,6 +144,10 @@ module.exports = (sequelize, DataTypes) => {
 
     User.prototype.validatePassword = async function (password) {
         return bcrypt.compare(password, this.password)
+    }
+
+    User.prototype.signUpEmail = async function (password, domain) {
+        return EmailService.signUpEmail(this.email, this.userName, password, domain)
     }
     sequelizePaginate.paginate(User)
     return User

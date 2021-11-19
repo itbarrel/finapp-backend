@@ -7,8 +7,8 @@ const create = async () => {
 
     const superAdmin = {
         userName: 'SuperAdmin',
-        email: 'superadmin@crisishub.com',
-        password: 'crisishub12345',
+        email: 'superadmin@finapp.com',
+        password: 'finapp12345',
         firstName: 'Super',
         lastName: 'Admin',
         RoleId: role.id,
