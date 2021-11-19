@@ -49,6 +49,15 @@ class FormSubmissionsService extends ResourceService {
         }
         return submission
     }
+
+    async single(obj = {}) {
+        const { userId, formId } = obj
+        const submission = await this.model.findOne({ where: { userId, formId } })
+        if (!submission) {
+            throw new Error('No Submitted Data Found')
+        }
+        return submission
+    }
 }
 
 module.exports = FormSubmissionsService

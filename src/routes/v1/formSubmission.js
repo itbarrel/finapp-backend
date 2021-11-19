@@ -14,8 +14,10 @@ router.get('/', validate(generalValidations.allResources),
 router.post('/',
     chkPermissions(formSubmissionPermissions.create), formSubmissionController.create)
 
-router.get('/:id', validate(generalValidations.getResource),
-    chkPermissions(formSubmissionPermissions.get), formSubmissionController.show)
+// router.get('/:id', validate(generalValidations.getResource),
+//     chkPermissions(formSubmissionPermissions.get), formSubmissionController.show)
+router.get('/single',
+    chkPermissions(formSubmissionPermissions.get), formSubmissionController.single)
 
 router.put('/:id',
     validate(generalValidations.getResource),

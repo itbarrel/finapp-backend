@@ -75,6 +75,18 @@ const complete = async (req, res, next) => {
     }
 }
 
+const single = async (req, res, next) => {
+    try {
+        const FormSubmission = new FormSubmissionsService()
+
+        const formSubmission = await FormSubmission.single(req.query)
+
+        res.send(formSubmission)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
-    all, create, show, update, destroy, complete,
+    all, create, show, update, destroy, complete, single,
 }
