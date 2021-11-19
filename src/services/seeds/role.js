@@ -7,9 +7,8 @@ const superAdminRole = {
         Accounts: ['*'],
         Roles: ['*'],
         Users: ['*'],
-        AccountTypes: ['*'],
-        FormSubmissions: ['*'],
-
+        // AccountTypes: ['*'],
+        // FormSubmissions: ['*'],
     },
     default: true,
 }

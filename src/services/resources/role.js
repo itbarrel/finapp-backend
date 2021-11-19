@@ -17,25 +17,19 @@ class RoleService extends ResourceService {
                 permissions: {
                     Roles: ['*'],
                     Users: ['*'],
-                    AccountTypes: ['*'],
+                    Forms: ['*'],
                     FormSubmissions: ['*'],
-
                 },
                 default: true,
             },
             {
-                name: 'Information Provider',
-                permissions: {},
-                default: true,
-            },
-            {
-                name: 'Information Manager',
-                permissions: {},
+                name: 'Moderator',
+                permissions: { FormSubmissions: ['*'] },
                 default: true,
             },
         ]
 
-        this.entities = ['Users', 'Departments', 'Incidents', 'Tasks']
+        this.entities = ['Users', 'FormSubmissions']
         this.operations = ['*', 'view', 'create', 'update', 'delete']
     }
 
