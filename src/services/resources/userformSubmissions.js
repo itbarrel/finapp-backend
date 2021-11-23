@@ -38,8 +38,8 @@ class UserFormSubmissionService extends ResourceService {
     }
 
     async create(obj = {}) {
-        const { userId, formId, ...rest } = obj
-        let submission = await this.model.findOne({ where: { userId, formId } })
+        const { parentId, formId, ...rest } = obj
+        let submission = await this.model.findOne({ where: { parentId, formId } })
         if (submission) {
             submission = await submission.update(rest)
         } else {
@@ -50,7 +50,7 @@ class UserFormSubmissionService extends ResourceService {
 
     async complete(obj = {}) {
         const {
-            userId, formId, dynamicFormAccountId,
+            parentId, formId, dynamicFormAccountId,
         } = obj
         if (!dynamicFormAccountId) throw new Error('No Account Found to send Details')
 
@@ -60,15 +60,14 @@ class UserFormSubmissionService extends ResourceService {
 
         // Find the data
 
-        const formData = await this.model.findOne({ where: { userId, formId } })
+        const formData = await this.model.findAll({ where: { parentId, formId } })
         if (!formData) throw new Error('No Submitted data Found')
 
         // Create replica of user for external user
         const userService = new UserService()
-        const externalUser = await userService.findone({ where: { id: userId } })
-
+        const externalUser = await userService.findById(parentId)
         // Deletes from previous Account
-        await this.model.destroy({ where: { userId, formId } })
+        await this.model.destroy({ where: { parentId, formId } })
 
         const { data } = formData
         // Deletes from previous Account
@@ -79,13 +78,13 @@ class UserFormSubmissionService extends ResourceService {
 
         const externalUserService = new ExternalUserService(tenantName)
 
-        await externalUserService.create({ externalUser })
+        await externalUserService.create(externalUser.dataValues)
 
-        let submission = await recieverAccountService.findByQuery({ userId, formId }, true)
+        let submission = await recieverAccountService.findByQuery({ parentId, formId }, true)
         if (submission) {
-            submission = await recieverAccountService.update({ data }, { userId, formId })
+            submission = await recieverAccountService.update({ data }, { parentId, formId })
         } else {
-            submission = await recieverAccountService.create({ userId, formId, data })
+            submission = await recieverAccountService.create({ parentId, formId, data })
         }
         return submission
     }
