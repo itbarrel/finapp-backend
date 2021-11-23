@@ -39,7 +39,7 @@ class UserFormSubmissionService extends ResourceService {
 
     async create(obj = {}) {
         const { parentId, formId, ...rest } = obj
-        let submission = await this.model.findOne({ where: { parentId, formId } })
+        let submission = await this.model.findOne({ where: { parentId, formId, parentType: 'user' } })
         if (submission) {
             submission = await submission.update(rest)
         } else {
@@ -52,6 +52,7 @@ class UserFormSubmissionService extends ResourceService {
         const {
             parentId, formId, dynamicFormAccountId,
         } = obj
+        const domain = storage.get('domain')
         if (!dynamicFormAccountId) throw new Error('No Account Found to send Details')
 
         const Account = new AccountService()
@@ -59,32 +60,44 @@ class UserFormSubmissionService extends ResourceService {
         if (!recieverAccount) throw new Error('No Account Found to send Details')
 
         // Find the data
-
-        const formData = await this.model.findAll({ where: { parentId, formId } })
+        const formData = await this.model.findOne({ where: { parentId, formId, parentType: 'user' } })
         if (!formData) throw new Error('No Submitted data Found')
 
         // Create replica of user for external user
         const userService = new UserService()
-        const externalUser = await userService.findById(parentId)
-        // Deletes from previous Account
-        await this.model.destroy({ where: { parentId, formId } })
+        const user = await userService.findByQuery({ id: parentId }, true)
+        const role = await user.getRole()
+        if (!user) throw new Error('No User data Found')
 
-        const { data } = formData
-        // Deletes from previous Account
         const { tenant_name: tenantName } = recieverAccount
+        const { data } = formData
+
+        const userObjToCreate = {
+            tenantName: domain,
+            userId: parentId,
+            userName: user.userName,
+            firstName: user.firstName,
+            role: role.name,
+            mobilePhone: user.mobilePhone,
+            email: user.email,
+        }
+
+        // Deletes from previous Account
+        await this.model.destroy({ where: { parentId, formId, parentType: 'user' } })
 
         // Create External User
         const recieverAccountService = new ExtrenalUserFormSubmissionService(tenantName)
-
         const externalUserService = new ExternalUserService(tenantName)
 
-        await externalUserService.create(externalUser.dataValues)
+        const externalUser = await externalUserService.create(userObjToCreate)
 
-        let submission = await recieverAccountService.findByQuery({ parentId, formId }, true)
+        let submission = await recieverAccountService.findByQuery({
+            parentId: externalUser.id, formId, parentType: 'externalUser',
+        }, true)
         if (submission) {
             submission = await recieverAccountService.update({ data }, { parentId, formId })
         } else {
-            submission = await recieverAccountService.create({ parentId, formId, data })
+            submission = await recieverAccountService.create({ parentId: externalUser.id, formId, data })
         }
         return submission
     }

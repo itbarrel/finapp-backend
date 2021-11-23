@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         parentType: {
             type: DataTypes.STRING,
+            defaultValue: 'externalUser',
         },
         formId: {
             type: DataTypes.UUID,

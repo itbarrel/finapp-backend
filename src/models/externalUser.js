@@ -15,16 +15,16 @@ module.exports = (sequelize, DataTypes) => {
             })
         }
     }
+
     ExternalUser.init({
         id: {
-            primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDv4,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
         },
         userName: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         firstName: {
             type: DataTypes.STRING,
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         tenantName: {
             type: DataTypes.STRING,
         },
-        externalUserId: {
+        userId: {
             type: DataTypes.UUID,
         },
         role: {
