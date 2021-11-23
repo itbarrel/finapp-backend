@@ -4,12 +4,14 @@ const {
 const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (sequelize, DataTypes) => {
-    class FormSubmission extends Model {
-        static associate() {
-            // define association here
+    class ExternalUserFormSubmission extends Model {
+        static associate(models) {
+            ExternalUserFormSubmission.belongsTo(models.ExternalUser, {
+                foreignKey: 'parentId',
+            })
         }
     }
-    FormSubmission.init({
+    ExternalUserFormSubmission.init({
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
@@ -18,14 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         parentId: {
             type: DataTypes.UUID,
         },
+        parentType: {
+            type: DataTypes.STRING,
+        },
         formId: {
             type: DataTypes.UUID,
         },
         data: {
             type: DataTypes.JSON,
-        },
-        parentType: {
-            type: DataTypes.STRING,
         },
         active: {
             type: DataTypes.BOOLEAN,
@@ -46,10 +48,10 @@ module.exports = (sequelize, DataTypes) => {
 
     }, {
         sequelize,
-        modelName: 'FormSubmission',
+        modelName: 'ExternalUserFormSubmission',
         tableName: 'formSubmissions',
         paranoid: true,
     })
-    sequelizePaginate.paginate(FormSubmission)
-    return FormSubmission
+    sequelizePaginate.paginate(ExternalUserFormSubmission)
+    return ExternalUserFormSubmission
 }

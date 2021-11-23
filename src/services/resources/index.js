@@ -3,7 +3,9 @@ const AccountTypeService = require('./accoutType')
 const AccountService = require('./account')
 const RoleService = require('./role')
 const UserService = require('./user')
-const FormSubmissionsService = require('./formSubmissions')
+const ExternalUserService = require('./externalUser')
+const UserFormSubmissionService = require('./userformSubmissions')
+const ExtrenalUserFormSubmissionService = require('./externalUserformSubmission')
 
 module.exports = {
     ResourceService,
@@ -11,5 +13,7 @@ module.exports = {
     AccountService,
     RoleService,
     UserService,
-    FormSubmissionsService,
+    UserFormSubmissionService,
+    ExtrenalUserFormSubmissionService,
+    ExternalUserService,
 }

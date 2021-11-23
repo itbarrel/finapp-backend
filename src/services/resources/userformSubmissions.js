@@ -3,13 +3,16 @@ const models = require('../../models')
 const storage = require('../../utils/cl-storage')
 const ResourceService = require('./resource')
 const AccountService = require('./account')
+const UserService = require('./user')
+const ExternalUserService = require('./externalUser')
+const ExtrenalUserFormSubmissionService = require('./externalUserformSubmission')
 
-class FormSubmissionsService extends ResourceService {
+class UserFormSubmissionService extends ResourceService {
     constructor(tenantName) {
         const decoded = storage.get('decoded')
         const domain = tenantName || decoded.domain
         const schemaModels = models(domain)
-        super(schemaModels.FormSubmission)
+        super(schemaModels.UserFormSubmission)
         this.domain = domain
     }
 
@@ -54,10 +57,15 @@ class FormSubmissionsService extends ResourceService {
         const Account = new AccountService()
         const recieverAccount = await Account.findByQuery({ dynamicFormAccountId })
         if (!recieverAccount) throw new Error('No Account Found to send Details')
+
         // Find the data
 
         const formData = await this.model.findOne({ where: { userId, formId } })
         if (!formData) throw new Error('No Submitted data Found')
+
+        // Create replica of user for external user
+        const userService = new UserService()
+        const externalUser = await userService.findone({ where: { id: userId } })
 
         // Deletes from previous Account
         await this.model.destroy({ where: { userId, formId } })
@@ -65,13 +73,19 @@ class FormSubmissionsService extends ResourceService {
         const { data } = formData
         // Deletes from previous Account
         const { tenant_name: tenantName } = recieverAccount
-        const recieverAccountService = new FormSubmissionsService(tenantName)
+
+        // Create External User
+        const recieverAccountService = new ExtrenalUserFormSubmissionService(tenantName)
+
+        const externalUserService = new ExternalUserService(tenantName)
+
+        await externalUserService.create({ externalUser })
 
         let submission = await recieverAccountService.findByQuery({ userId, formId }, true)
         if (submission) {
             submission = await recieverAccountService.update({ data }, { userId, formId })
         } else {
-            submission = recieverAccountService.create({ userId, formId, data })
+            submission = await recieverAccountService.create({ userId, formId, data })
         }
         return submission
     }
@@ -86,4 +100,4 @@ class FormSubmissionsService extends ResourceService {
     }
 }
 
-module.exports = FormSubmissionsService
+module.exports = UserFormSubmissionService

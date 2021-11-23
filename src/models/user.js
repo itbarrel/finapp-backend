@@ -14,6 +14,14 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 onDelete: 'cascade',
             })
+            User.hasMany(models.UserFormSubmission, {
+                foreignKey: 'parentId',
+                constraints: false,
+                onDelete: 'cascade',
+                scope: {
+                    parentType: 'user',
+                },
+            })
         }
     }
 

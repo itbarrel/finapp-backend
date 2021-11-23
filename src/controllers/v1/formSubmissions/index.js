@@ -1,9 +1,9 @@
-const { FormSubmissionsService } = require('../../../services/resources')
+const { UserFormSubmissionService } = require('../../../services/resources')
 
 const all = async (req, res, next) => {
     try {
         const { offset, limit, ...query } = req.query
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const { docs, pages, total } = await FormSubmission.all(query, offset, limit)
 
@@ -15,7 +15,7 @@ const all = async (req, res, next) => {
 
 const create = async (req, res, next) => {
     try {
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const formSubmission = await FormSubmission.create(req.body)
 
@@ -27,7 +27,7 @@ const create = async (req, res, next) => {
 
 const show = async (req, res, next) => {
     try {
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const { id } = req.params
         const formSubmission = await FormSubmission.findById(id)
@@ -40,7 +40,7 @@ const show = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const { id } = req.params
         const formSubmission = await FormSubmission.update(req.body, { id })
@@ -53,7 +53,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
     try {
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const { id } = req.params
         const formSubmission = await FormSubmission.delete({ id })
@@ -65,7 +65,7 @@ const destroy = async (req, res, next) => {
 
 const complete = async (req, res, next) => {
     try {
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const formSubmission = await FormSubmission.complete(req.body)
 
@@ -77,7 +77,7 @@ const complete = async (req, res, next) => {
 
 const single = async (req, res, next) => {
     try {
-        const FormSubmission = new FormSubmissionsService()
+        const FormSubmission = new UserFormSubmissionService()
 
         const formSubmission = await FormSubmission.single(req.query)
 
