@@ -16,7 +16,7 @@ class UserFormSubmissionService extends ResourceService {
         this.domain = domain
     }
 
-    async all(query = {}, offset = 1, limit = 100) {
+    async all(query = {}, offset = 1, limit = 50) {
         const { status } = query
         if (status === 'completed') {
             delete query.status
