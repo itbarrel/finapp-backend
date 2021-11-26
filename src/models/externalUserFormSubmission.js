@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'formSubmissions',
         paranoid: true,
     })
+
     sequelizePaginate.paginate(ExternalUserFormSubmission)
     return ExternalUserFormSubmission
 }

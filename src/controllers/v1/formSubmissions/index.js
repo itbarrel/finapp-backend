@@ -1,9 +1,18 @@
 const { UserFormSubmissionService } = require('../../../services/resources')
+const { ExtrenalUserFormSubmissionService } = require('../../../services/resources')
 
 const all = async (req, res, next) => {
     try {
-        const { offset, limit, ...query } = req.query
-        const FormSubmission = new UserFormSubmissionService()
+        const {
+            offset, limit, externalUser, ...query
+        } = req.query
+        let FormSubmission
+
+        if (externalUser) {
+            FormSubmission = new ExtrenalUserFormSubmissionService()
+        } else {
+            FormSubmission = new UserFormSubmissionService()
+        }
 
         const { docs, pages, total } = await FormSubmission.all(query, offset, limit)
 

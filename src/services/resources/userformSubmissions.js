@@ -16,7 +16,7 @@ class UserFormSubmissionService extends ResourceService {
         this.domain = domain
     }
 
-    async all(query = {}, offset = 1, limit = 20) {
+    async all(query = {}, offset = 1, limit = 100) {
         const { status } = query
         if (status === 'completed') {
             delete query.status
@@ -28,6 +28,7 @@ class UserFormSubmissionService extends ResourceService {
             where: query,
             page: offset,
             paginate: limit,
+            include: ['User'],
         }
 
         if (status === 'completed') {
@@ -103,8 +104,8 @@ class UserFormSubmissionService extends ResourceService {
     }
 
     async single(obj = {}) {
-        const { userId, formId } = obj
-        const submission = await this.model.findOne({ where: { userId, formId } })
+        const { parentId, formId } = obj
+        const submission = await this.model.findOne({ where: { parentId, formId }, paranoid: false })
         if (!submission) {
             throw new Error('No Submitted Data Found')
         }

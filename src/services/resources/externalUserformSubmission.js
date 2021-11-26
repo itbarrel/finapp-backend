@@ -24,6 +24,7 @@ class ExtrenalUserFormSubmissionService extends ResourceService {
             where: query,
             page: offset,
             paginate: limit,
+            include: ['ExternalUser'],
         }
 
         if (status === 'completed') {
