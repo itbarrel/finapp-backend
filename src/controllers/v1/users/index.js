@@ -27,6 +27,19 @@ const create = async (req, res, next) => {
     }
 }
 
+const createCustomer = async (req, res, next) => {
+    try {
+        const User = new UserService()
+
+        const userObj = req.body
+        const user = await User.createCustomer(userObj, 'customer')
+
+        res.send({ message: 'Email is send', user })
+    } catch (error) {
+        next(error)
+    }
+}
+
 const show = async (req, res, next) => {
     try {
         const User = new UserService()
@@ -67,5 +80,5 @@ const destroy = async (req, res, next) => {
 }
 
 module.exports = {
-    all, create, show, update, destroy,
+    all, create, show, update, destroy, createCustomer,
 }

@@ -22,15 +22,23 @@ class UserService extends ResourceService {
         return user
     }
 
-    async createDefaultUsersFor(userObj) {
+    async createCustomer(obj = {}) {
+        return this.createDefaultUsersFor(obj, 'customer')
+    }
+
+    async createDefaultUsersFor(userObj, deafultRole = 'admin') {
         const Role = new RoleService(this.domain)
-        const role = await Role.findByQuery({ value: 'admin' })
+        const role = await Role.findByQuery({ value: deafultRole })
+        if (!role) throw new Error(`No Role:${deafultRole} found`)
+
         userObj.RoleId = role.id
+
         const { password } = userObj
         const { domain } = this
 
         const user = await this.model.create(userObj)
         await user.signUpEmail(password, domain)
+        return user
     }
 }
 

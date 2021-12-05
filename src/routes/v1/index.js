@@ -13,9 +13,11 @@ const roleRoute = require('./roles')
 const userRoute = require('./users')
 const accountTypeRoute = require('./accountType')
 const formSubmissionRoute = require('./formSubmission')
+const customerRoute = require('./customers')
 
 const verifyAccount = require('../../middlewares/verifyAccount')
 const setDomainFromBody = require('../../middlewares/setDomainFromBody')
+const setDefaultTenant = require('../../middlewares/setDefaultTenant')
 
 const necessaryMiddlewares = [
     validate(generalValidations.headers),
@@ -30,6 +32,7 @@ const routes = [
     { path: '/accounts', routes: [...necessaryMiddlewares, accountRoute] },
     { path: '/accountTypes', routes: [...necessaryMiddlewares, accountTypeRoute] },
     { path: '/formSubmissions', routes: [...necessaryMiddlewares, formSubmissionRoute] },
+    { path: '/customers', routes: [setDefaultTenant, verifyAccount, customerRoute] },
     { path: '/auth', routes: [authRoute] },
 ]
 

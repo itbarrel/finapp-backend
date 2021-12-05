@@ -39,8 +39,8 @@ class EmailService {
     }
 
     async forgetPasswordEmail(email, name, token) {
-        const { frontenddomain } = config
-        const link = `${frontenddomain}auth/reset-password?token=${token}`
+        const { frontEndDomain } = config
+        const link = `${frontEndDomain}auth/reset-password?token=${token}`
         const mailOptions = {
             from: config.email.from,
             to: email,

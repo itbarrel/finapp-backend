@@ -18,7 +18,7 @@ const envVarsSchema = Joi.object()
         FRONT_END_DOMAIN: Joi.string().description('Front_End Domain URL'),
         Dynamic_Form_Token: Joi.string().description('Dynamic Form Token'),
         Dynamic_Form_URL: Joi.string().description('Dynamic Form URL'),
-
+        DEFAULT_TENANT_NAME: Joi.string().required().description('Default Tenant Name'),
     })
     .unknown()
 
@@ -61,7 +61,8 @@ module.exports = {
         },
         from: env.SMTP_SENDER_EMAIL || 'someone@yopmail.com',
     },
-    frontenddomain: env.FRONT_END_DOMAIN || null,
+    frontEndDomain: env.FRONT_END_DOMAIN || null,
     DynamicFormToken: env.Dynamic_Form_Token || null,
     DynamicFormUrl: env.Dynamic_Form_URL || null,
+    DefaultTenantName: env.DEFAULT_TENANT_NAME || 'finapp',
 }

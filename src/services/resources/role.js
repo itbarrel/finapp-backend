@@ -27,6 +27,11 @@ class RoleService extends ResourceService {
                 permissions: { FormSubmissions: ['*'] },
                 default: true,
             },
+            {
+                name: 'Customer',
+                permissions: { FormSubmissions: ['*'] },
+                default: true,
+            },
         ]
 
         this.entities = ['Users', 'FormSubmissions']
