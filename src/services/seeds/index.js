@@ -4,12 +4,14 @@ module.exports = {}
 const AccountTypeSeeder = require('./accoutType')
 const RoleSeeder = require('./role')
 const UserSeeder = require('./user')
+const layoutSeeder = require('./layout')
 
 const create = async () => {
     // await AccountSeeder.create()
-    await AccountTypeSeeder.create()
-    await RoleSeeder.create()
-    await UserSeeder.create()
+    // await AccountTypeSeeder.create()
+    // await RoleSeeder.create()
+    // await UserSeeder.create()
+    await layoutSeeder.create()
 }
 
 const destroy = async () => {

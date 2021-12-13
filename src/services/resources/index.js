@@ -6,6 +6,7 @@ const UserService = require('./user')
 const ExternalUserService = require('./externalUser')
 const UserFormSubmissionService = require('./userformSubmissions')
 const ExtrenalUserFormSubmissionService = require('./externalUserformSubmission')
+const LayoutService = require('./layout')
 
 module.exports = {
     ResourceService,
@@ -16,4 +17,5 @@ module.exports = {
     UserFormSubmissionService,
     ExtrenalUserFormSubmissionService,
     ExternalUserService,
+    LayoutService,
 }

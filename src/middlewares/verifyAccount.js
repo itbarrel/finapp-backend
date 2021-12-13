@@ -22,6 +22,7 @@ const verifyAccount = async (req, res, next) => {
 
             if (account) {
                 storage.set('account', account)
+                console.log("............////", account);
                 next()
             } else {
                 throw Error('Invalid Domain Token')
