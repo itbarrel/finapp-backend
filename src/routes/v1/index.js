@@ -14,7 +14,7 @@ const userRoute = require('./users')
 const accountTypeRoute = require('./accountType')
 const formSubmissionRoute = require('./formSubmission')
 const customerRoute = require('./customers')
-const printLayoutRoute = require('./printLayout')
+const printLayoutRoute = require('./printLayouts')
 
 const verifyAccount = require('../../middlewares/verifyAccount')
 const setDomainFromBody = require('../../middlewares/setDomainFromBody')
@@ -35,7 +35,7 @@ const routes = [
     { path: '/formSubmissions', routes: [...necessaryMiddlewares, formSubmissionRoute] },
     { path: '/customers', routes: [setDefaultTenant, verifyAccount, customerRoute] },
     { path: '/auth', routes: [authRoute] },
-    { path: '/printLayout', routes: [...necessaryMiddlewares, printLayoutRoute] },
+    { path: '/layouts', routes: [...necessaryMiddlewares, printLayoutRoute] },
 ]
 
 routes.forEach((route) => {

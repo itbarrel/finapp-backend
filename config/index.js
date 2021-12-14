@@ -19,6 +19,7 @@ const envVarsSchema = Joi.object()
         Dynamic_Form_Token: Joi.string().description('Dynamic Form Token'),
         Dynamic_Form_URL: Joi.string().description('Dynamic Form URL'),
         DEFAULT_TENANT_NAME: Joi.string().required().description('Default Tenant Name'),
+        DEFAULT_LAYOUT_PATH: Joi.string().required().description('Default Layout Path'),
     })
     .unknown()
 
@@ -65,4 +66,5 @@ module.exports = {
     DynamicFormToken: env.Dynamic_Form_Token || null,
     DynamicFormUrl: env.Dynamic_Form_URL || null,
     DefaultTenantName: env.DEFAULT_TENANT_NAME || 'finapp',
+    DefaultLayoutPath: env.DEFAULT_LAYOUT_PATH || '/layouts/basic.html',
 }

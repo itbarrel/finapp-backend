@@ -1,5 +1,4 @@
-const signUplayout = (variables = {}) => {
-    return `<!DOCTYPE html>
+module.exports = (variables = {}) => `<!DOCTYPE html>
     <html>
     
     <body>
@@ -19,6 +18,3 @@ const signUplayout = (variables = {}) => {
     </body>
     
     </html>`
-}
-
-module.exports = { signUplayout }

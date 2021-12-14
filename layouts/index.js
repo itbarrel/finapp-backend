@@ -1,4 +1,5 @@
-const signUplayout = require('./signUp')
+const signUplayout = require('./basic')
+
 module.exports = {
-    signUplayout
+    signUplayout,
 }

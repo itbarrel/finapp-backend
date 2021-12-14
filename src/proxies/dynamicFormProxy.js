@@ -1,18 +1,11 @@
 const axios = require('axios').default
 const config = require('../../config')
 
-const storage = require('../utils/cl-storage')
-const account = storage.get('account')
-
-console.log("procxy account", { account });
-
-
-
 const token = config.DynamicFormToken
 class DynamicFormProxy {
     constructor() {
         this.url = config.DynamicFormUrl
-        this.headers = { token, authorization: account.dynamicFormAccountApikey }
+        this.headers = { token }
     }
 
     async createAccount(obj = {}) {
@@ -25,15 +18,15 @@ class DynamicFormProxy {
 
         return addedAccount
     }
-    async getForm(obj = {}) {
-        console.log("getForm procxy");
-        const getedForm = await axios({
+
+    async getForm(formId, dynamicFormAccountApikey) {
+        const form = await axios({
             method: 'get',
-            url: `${this.url}v1/forms/${obj.id}`,
-            headers: this.headers,
+            url: `${this.url}v1/forms/${formId}`,
+            headers: { ...this.headers, authorization: dynamicFormAccountApikey },
         })
 
-        return getedForm
+        return form
     }
 }
 module.exports = new DynamicFormProxy()
