@@ -5,7 +5,7 @@ const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (sequelize, DataTypes) => {
     class Layout extends Model {
-        static associate() {}
+        static associate() { }
     }
     Layout.init({
         id: {
@@ -16,13 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         path: {
             type: DataTypes.STRING,
         },
         formId: {
             type: DataTypes.UUID,
+            allowNull: false,
         },
         active: {
             type: DataTypes.BOOLEAN,
@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         modelName: 'Layout',
         tableName: 'layouts',
         paranoid: true,
+
     })
     sequelizePaginate.paginate(Layout)
     return Layout

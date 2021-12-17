@@ -7,6 +7,7 @@ const printLayoutsController = require('../../controllers/v1/printlayouts')
 const { layoutValidations } = require('../../validations')
 
 router.get('/', printLayoutsController.all)
+router.post('/', printLayoutsController.create)
 router.post('/print', validate(layoutValidations.print), printLayoutsController.print)
 
 module.exports = router
