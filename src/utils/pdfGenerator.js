@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+const uuid = require('uuid')
 
 const path = require('path')
 const pdf = require('html-pdf')
@@ -8,7 +8,7 @@ const options = {
 }
 
 module.exports = (html, filePath) => {
-    const outputPath = filePath || path.join(process.cwd(), `/pdfOutputs/${uuidv4()}.pdf`)
+    const outputPath = filePath || path.join(process.cwd(), `/pdfOutputs/${uuid.v4()}.pdf`)
     return new Promise((resolve, reject) => {
         pdf.create(html, options).toFile(outputPath, (err, response) => {
             if (err) {
