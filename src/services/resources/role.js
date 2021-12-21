@@ -1,6 +1,5 @@
 const models = require('../../models')
 const storage = require('../../utils/cl-storage')
-
 const ResourceService = require('./resource')
 
 class RoleService extends ResourceService {
@@ -19,6 +18,7 @@ class RoleService extends ResourceService {
                     Users: ['*'],
                     Forms: ['*'],
                     FormSubmissions: ['*'],
+                    Layouts: ['*'],
                 },
                 default: true,
             },
@@ -34,7 +34,11 @@ class RoleService extends ResourceService {
             },
         ]
 
+
+
+
         this.entities = ['Users', 'FormSubmissions']
+        this.bankEntities = ['Layouts']
         this.operations = ['*', 'view', 'create', 'update', 'delete']
     }
 
@@ -43,8 +47,15 @@ class RoleService extends ResourceService {
     }
 
     async getPermissionEntities() {
-        const { operations, entities } = this
-        return { operations, entities }
+        const account = storage.get('account')
+        const { name } = await account.getAccountType()
+
+        const { operations, bankEntities, entities } = this
+        if (name === 'Bank') {
+            return { operations, entities: entities.concat(bankEntities) }
+        } else {
+            return { operations, entities }
+        }
     }
 }
 
