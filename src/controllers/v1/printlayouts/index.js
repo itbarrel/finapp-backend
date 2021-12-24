@@ -125,7 +125,45 @@ const create = async (req, res) => {
         })
     }
 }
+const show = async (req, res, next) => {
+    try {
+        const Layout = new LayoutService()
 
+        const { id } = req.params
+        const layout = await Layout.findById(id)
+
+        res.send(layout)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const update = async (req, res, next) => {
+    try {
+        const Layout = new LayoutService()
+
+        const { id } = req.params
+        console.log('>>>>>>>>>>>', req);
+        const layout = await Layout.update(req.body, { id })
+
+        res.send(layout)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const destroy = async (req, res, next) => {
+    try {
+        const Layout = new LayoutService()
+
+        const { id } = req.params
+        await Layout.delete({ id })
+
+        res.send({ message: 'Layout is deleted' })
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
-    all, print, create,
+    all, print, create, show, update, destroy
 }
