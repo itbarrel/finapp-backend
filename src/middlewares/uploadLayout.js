@@ -1,5 +1,34 @@
 import { v4 as uuidv4 } from 'uuid'
 
+// const util = require("util");
+// const path = require("path");
+// const multer = require("multer");
+
+// var storage = multer.diskStorage({
+//     destination: (req, file, callback) => {
+//         callback(null, path.join(process.cwd(), '/layouts/'));
+//         console.log("......");
+
+//     },
+//     filename: (req, file, callback) => {
+//         const match = ["/html"];
+
+//         if (match.indexOf(file.mimetype) === -1) {
+//             var message = `${file.originalname} is invalid. Only accept Html.`;
+//             return callback(message, null);
+//         }
+
+//         var filename = `${uuidv4()}-${file.originalname}`;
+//         callback(null, filename);
+//     }
+// });
+
+// var uploadFiles = multer({ storage: storage }).array("multi-files", 10);
+// var uploadFilesMiddleware = util.promisify(uploadFiles);
+// module.exports = uploadFilesMiddleware;
+
+/////////
+
 const util = require('util')
 const multer = require('multer')
 const path = require('path')
@@ -27,17 +56,12 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         cb(null, `${uuidv4()}-${file.originalname}`)
-    },
-})
-
-const uploadFile = multer({
-
-    storage,
-    limits: { fileSize: maxSize },
-    fileFilter(_req, file, cb) {
         checkFileType(file, cb)
     },
-}).single('file')
+
+})
+
+const uploadFile = multer({ storage }).array("files", 10)
 
 const uploadFileMiddleware = util.promisify(uploadFile)
 module.exports = uploadFileMiddleware

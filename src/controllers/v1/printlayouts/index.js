@@ -6,7 +6,7 @@
 // const { signUplayout } = require('../../../../layouts')
 const path = require('path')
 const fs = require('fs')
-const uploadFile = require('../../../middlewares/uploadLayout')
+const uploadFilesMiddleware = require('../../../middlewares/uploadLayout')
 const storage = require('../../../utils/cl-storage')
 const { LayoutService, ExtrenalUserFormSubmissionService } = require('../../../services/resources')
 const DynamicFormProxy = require('../../../proxies/dynamicFormProxy')
@@ -95,7 +95,7 @@ const print = async (req, res, next) => {
 
 const create = async (req, res) => {
     try {
-        await uploadFile(req, res)
+        await uploadFilesMiddleware(req, res)
 
         if (req.file === undefined) {
             return res.status(400).send({ message: 'Please upload a file!' })
@@ -140,10 +140,11 @@ const show = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
+        console.log(",,,,,,,,,,,,,");
         const Layout = new LayoutService()
 
         const { id } = req.params
-        console.log('>>>>>>>>>>>', req);
+        console.log('>>>>>>>>>>>', req.body);
         const layout = await Layout.update(req.body, { id })
 
         res.send(layout)

@@ -5,7 +5,14 @@ const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (sequelize, DataTypes) => {
     class Layout extends Model {
-        static associate() { }
+        static associate(models) {
+            Layout.hasMany(models.Page, {
+                foreignKey: {
+                    allowNull: false,
+                },
+                onDelete: 'cascade',
+            })
+        }
     }
     Layout.init({
         id: {
