@@ -5,12 +5,14 @@
 // const formLayout = require('../../../../layouts/signUp')
 // const { signUplayout } = require('../../../../layouts')
 const path = require('path')
-
+const fs = require('fs')
+const uploadFile = require('../../../middlewares/uploadLayout')
 const storage = require('../../../utils/cl-storage')
 const { LayoutService, ExtrenalUserFormSubmissionService } = require('../../../services/resources')
 const DynamicFormProxy = require('../../../proxies/dynamicFormProxy')
 const config = require('../../../../config')
 const pdfGenerator = require('../../../utils/pdfGenerator')
+const fileParser = require('../../../utils/fileParser')
 
 const all = async (req, res, next) => {
     try {
@@ -65,23 +67,25 @@ const print = async (req, res, next) => {
 
         if (form.fields && Array.isArray(form.fields) && submission.data && typeof submission.data === 'object') {
             form.fields.map((field, index) => {
-                const key = `v${index + 1}`
+                const key = `field${index + 1}`
                 mapping[key] = submission.data[field.model]
                 return key
             })
 
             /// //////////Layout parsing///////////////
 
-            const layoutModel = require(path.join(process.cwd(), layout.path))
-            const parsedHtml = layoutModel(mapping)
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            fs.readFile(path.join(process.cwd(), layout.path), 'utf8', async (err, html) => {
+                const parsedHtml = fileParser(html, mapping)
 
-            const pdfResponse = await pdfGenerator(parsedHtml)
-            const { filename } = pdfResponse
+                const pdfResponse = await pdfGenerator(parsedHtml)
+                const { filename } = pdfResponse
 
-            res.contentType('application/pdf')
-            res.setHeader('Content-Type', 'application/pdf')
-            res.setHeader('Content-Disposition', `attachment;filename=${filename}`)
-            res.download(filename)
+                res.contentType('application/pdf')
+                res.setHeader('Content-Type', 'application/pdf')
+                res.setHeader('Content-Disposition', `attachment;filename=${filename}`)
+                res.download(filename)
+            })
         } else {
             throw new Error('Data inconsistent')
         }
@@ -90,6 +94,39 @@ const print = async (req, res, next) => {
     }
 }
 
+const create = async (req, res) => {
+    try {
+        await uploadFile(req, res)
+
+        if (req.file === undefined) {
+            return res.status(400).send({ message: 'Please upload a file!' })
+        }
+        const Layout = new LayoutService()
+
+        const layoutObj = {
+            name: req.body.name,
+            formId: req.body.formId,
+            path: `/layouts/${req.file.filename}`,
+        }
+        const findlayout = await Layout.findByQuery({ name: layoutObj.name, formId: layoutObj.formId }, true)
+        if (!findlayout) {
+            const layout = await Layout.create(layoutObj)
+            res.status(200).send({
+                message: 'Uploaded the file successfully: ',
+                layout,
+            })
+        } else {
+            res.status(404).send({
+                message: 'This layout against this form is already exist',
+            })
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: `Could not upload the file: . ${err}`,
+        })
+    }
+}
+
 module.exports = {
-    all, print,
+    all, print, create,
 }

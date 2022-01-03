@@ -8,5 +8,6 @@ module.exports.passport = require('./passport')
 module.exports.pick = require('./pick')
 module.exports.dynamicConnection = require('./dynamicConnection')
 module.exports.pdfGenerator = require('./pdfGenerator')
+module.exports.fileParser = require('./fileParser')
 
 module.exports.downcase = (str) => str.toLowerCase()
