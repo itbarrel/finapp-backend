@@ -34,9 +34,6 @@ class RoleService extends ResourceService {
             },
         ]
 
-
-
-
         this.entities = ['Users', 'FormSubmissions']
         this.bankEntities = ['Layouts']
         this.operations = ['*', 'view', 'create', 'update', 'delete']
@@ -53,9 +50,8 @@ class RoleService extends ResourceService {
         const { operations, bankEntities, entities } = this
         if (name === 'Bank') {
             return { operations, entities: entities.concat(bankEntities) }
-        } else {
-            return { operations, entities }
         }
+        return { operations, entities }
     }
 }
 

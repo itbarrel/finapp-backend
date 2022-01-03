@@ -4,7 +4,7 @@ const util = require('util')
 const multer = require('multer')
 const path = require('path')
 
-const maxSize = 2 * 1024 * 1024
+// const maxSize = 2 * 1024 * 1024
 
 // const uuid = '8797'
 function checkFileType(file, cb) {
@@ -28,12 +28,11 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         cb(null, `${uuidv4()}-${file.originalname}`)
         checkFileType(file, cb)
-
     },
 
 })
 
-const uploadFile = multer({ storage }).array("files", 10)
+const uploadFile = multer({ storage }).array('files', 10)
 
 const uploadFileMiddleware = util.promisify(uploadFile)
 module.exports = uploadFileMiddleware

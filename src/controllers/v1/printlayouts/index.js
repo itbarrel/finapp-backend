@@ -75,7 +75,7 @@ const print = async (req, res, next) => {
             // const pages = await layout.getPages()
             /// //////////Layout parsing///////////////
 
-            // console.log('>>>>>>>>>>>>>>>.....', pages[0].path)
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
             fs.readFile(path.join(process.cwd(), layout.path), 'utf8', async (err, html) => {
                 const parsedHtml = fileParser(html, mapping)
 
@@ -104,7 +104,6 @@ const create = async (req, res) => {
         }
 
         const Layout = new LayoutService()
-        console.log(">>>>>", req.files);
 
         const layoutObj = {
             name: req.body.name,
@@ -113,17 +112,14 @@ const create = async (req, res) => {
         }
 
         const findlayout = await Layout.findByQuery({ name: layoutObj.name, formId: layoutObj.formId }, true)
-        console.log(">>>>>>>", findlayout);
 
         if (!findlayout) {
             const layout = await Layout.create(layoutObj)
 
-            req.files.map(file => {
-                console.log('>>>>>>>>>>>>>>>>...............', file)
-                layout.createPage({
-                    path: file.path
-                })
-            })
+            req.files.map((file) => layout.createPage({
+                path: file.path,
+            }))
+
             res.status(200).send({
                 message: 'Uploaded the file successfully: ',
                 layout,
@@ -154,11 +150,9 @@ const show = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        console.log(",,,,,,,,,,,,,");
         const Layout = new LayoutService()
-
         const { id } = req.params
-        console.log('>>>>>>>>>>>', req.body);
+
         const layout = await Layout.update(req.body, { id })
 
         res.send(layout)
@@ -180,5 +174,5 @@ const destroy = async (req, res, next) => {
     }
 }
 module.exports = {
-    all, print, create, show, update, destroy
+    all, print, create, show, update, destroy,
 }
