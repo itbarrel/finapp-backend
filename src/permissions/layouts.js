@@ -39,4 +39,12 @@ module.exports = {
             entity: 'Layouts',
         },
     ],
+    print: [
+        {
+            actionsTocheck: [
+                'print',
+            ],
+            entity: 'Layouts',
+        },
+    ],
 }
