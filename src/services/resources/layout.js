@@ -21,7 +21,7 @@ class LayoutService extends ResourceService {
 
         }
         const layouts = await this.model.paginate(options)
-        layouts.docs.unshift({ id: 0, name: 'Basic' })
+        layouts.docs.unshift({ id: 0, name: 'Basic', active: true })
         layouts.total += 1
         return layouts
     }

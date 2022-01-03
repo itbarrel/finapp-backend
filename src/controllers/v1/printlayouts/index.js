@@ -108,7 +108,7 @@ const create = async (req, res) => {
         const layoutObj = {
             name: req.body.name,
             formId: req.body.formId,
-            path: `/layouts/${req.files.filename}`,
+            // path: `/layouts/${req.files.filename}`,
         }
 
         const findlayout = await Layout.findByQuery({ name: layoutObj.name, formId: layoutObj.formId }, true)
@@ -116,9 +116,9 @@ const create = async (req, res) => {
         if (!findlayout) {
             const layout = await Layout.create(layoutObj)
 
-            req.files.map((file) => layout.createPage({
+            await Promise.all(req.files.map((file) => layout.createPage({
                 path: file.path,
-            }))
+            })))
 
             res.status(200).send({
                 message: 'Uploaded the file successfully: ',
