@@ -9,15 +9,10 @@ module.exports = {
           type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDv4,
         },
-        name: {
-          type: Sequelize.STRING,
-          allowNull: false,
-          unique: true,
-        },
         path: {
           type: Sequelize.STRING,
         },
-        layoutId: {
+        LayoutId: {
           type: Sequelize.UUID,
           allowNull: false,
           references: {

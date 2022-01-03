@@ -72,8 +72,10 @@ const print = async (req, res, next) => {
                 return key
             })
 
+            // const pages = await layout.getPages()
             /// //////////Layout parsing///////////////
 
+            // console.log('>>>>>>>>>>>>>>>.....', pages[0].path)
             fs.readFile(path.join(process.cwd(), layout.path), 'utf8', async (err, html) => {
                 const parsedHtml = fileParser(html, mapping)
 
@@ -97,19 +99,31 @@ const create = async (req, res) => {
     try {
         await uploadFilesMiddleware(req, res)
 
-        if (req.file === undefined) {
+        if (req.files === undefined) {
             return res.status(400).send({ message: 'Please upload a file!' })
         }
+
         const Layout = new LayoutService()
+        console.log(">>>>>", req.files);
 
         const layoutObj = {
             name: req.body.name,
             formId: req.body.formId,
-            path: `/layouts/${req.file.filename}`,
+            path: `/layouts/${req.files.filename}`,
         }
+
         const findlayout = await Layout.findByQuery({ name: layoutObj.name, formId: layoutObj.formId }, true)
+        console.log(">>>>>>>", findlayout);
+
         if (!findlayout) {
             const layout = await Layout.create(layoutObj)
+
+            req.files.map(file => {
+                console.log('>>>>>>>>>>>>>>>>...............', file)
+                layout.createPage({
+                    path: file.path
+                })
+            })
             res.status(200).send({
                 message: 'Uploaded the file successfully: ',
                 layout,
