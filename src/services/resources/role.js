@@ -45,9 +45,15 @@ class RoleService extends ResourceService {
 
     async getPermissionEntities() {
         const account = storage.get('account')
-        const { name } = await account.getAccountType()
-
         const { operations, bankEntities, entities } = this
+
+        let name = null
+        if (account.id === 0) {
+            name = 'default'
+        } else {
+            const type = await account.getAccountType()
+            name = type.name
+        }
 
         const finalEntities = (name === 'Bank') ? entities.concat(bankEntities) : entities
         return { operations, entities: finalEntities }
