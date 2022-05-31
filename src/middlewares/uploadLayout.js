@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
-
+const uuidv4 = require('uuid')
 const util = require('util')
 const multer = require('multer')
 const path = require('path')
@@ -26,7 +25,7 @@ const storage = multer.diskStorage({
         cb(null, path.join(process.cwd(), '/layouts/'))
     },
     filename: (req, file, cb) => {
-        cb(null, `${uuidv4()}-${file.originalname}`)
+        cb(null, `${uuidv4.v4()}-${file.originalname}`)
     },
 })
 

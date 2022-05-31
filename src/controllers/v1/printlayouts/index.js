@@ -144,7 +144,6 @@ const update = async (req, res, next) => {
         const Layout = new LayoutService()
 
         const { id } = req.params
-        console.log('>>>>>>>>>>>', req);
         const layout = await Layout.update(req.body, { id })
 
         res.send(layout)
@@ -166,5 +165,5 @@ const destroy = async (req, res, next) => {
     }
 }
 module.exports = {
-    all, print, create, show, update, destroy
+    all, print, create, show, update, destroy,
 }
